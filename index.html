@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+	<div id="app">
+		<div class="left">
+			<div class="box" v-if="isSmall">
+				<div class="tab">
+					<ul class="clearfix">
+						<li class="current">模特试镜</li>
+						<li>我的相片</li>
+						<li>视频相片</li>
+					</ul>
+				</div>
+				<div class="picList">
+					<div class="top">
+						<ul class="clearfix">
+							<li :class="{current: val.isTrue}" v-for="(val,index) in faceType" @click="addCurrent(index)">{{ val.type }}</li>
+						</ul>
+					</div>
+					<div class="content">
+						<ul class="clearfix">
+							<li v-for="(val,index) in smallImg"><img :src="val" @click="hidden(index)"></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="bigImg" v-else>
+				<img :src="bigImg" alt="">
+				<ul :style="{ height: ulHeight }">
+					<li @click="changeLen" :class="{up: isUp}"><br>{{ msg }}</li>
+					<li><br>拍照</li>
+					<li><br>瞳距</li>
+					<li @click="show"><br>重选</li>
+				</ul>
+			</div>
+		</div>
+		<div class="right">
+			<div class="search">
+				<group v-for="val in faGroup" message="val"></group>
+			</div>
+		</div>
+	</div>
+	
+	<script type="text/template" id="group">
+		<div class="group" @click="hidden">
+			<a href="javascript:;">{{ message.amsg }}</a>
+			<span>▼</span>
+			<ul class="select" v-if="message.isShow">
+				<li :class="{current: val.isTrue}" v-for="(val,index) in message.aGroup" @click="addCurrent(index)">{{ val.text }}</li>
+			</ul>
+		</div>
+	</script>
+
+	<script src="js/vue.js"></script>
+	<script>
+		var group={
+			template: "#group",
+			props: ["message"],
+			data: function (){
+				return {
+					
+				}
+			},
+			methods: {
+				addCurrent: function (index){
+					this.message.aGroup[index].isTrue=true;
+					this.message.amsg=this.message.aGroup[index].text;
+					this.message.aGroup[this.message.oldIndex].isTrue=false;
+					this.message.oldIndex=index;
+
+				},
+				hidden: function (){
+					this.message.isShow=!this.message.isShow;
+				}
+			}
+
+		}
+		var vm=new Vue({
+			el: "#app",
+			data: {
+				faceType: [
+					{
+						type: "全部",
+						isTrue: true
+					},
+					{
+						type: "椭圆脸",
+						isTrue: false
+					},
+					{
+						type: "圆形脸",
+						isTrue: false
+					},
+					{
+						type: "长形脸",
+						isTrue: false
+					},
+					{
+						type: "方形脸",
+						isTrue: false
+					},
+					{
+						type: "瓜子脸",
+						isTrue: false
+					},
+					{
+						type: "心型脸",
+						isTrue: false
+					}
+				],
+				oldIndex: 0,
+				smallImg: [],
+				isSmall: true,
+				bigImg: "images/big_1.jpg",
+				ulHeight: "200px",
+				isUp: false,
+				msg: "收缩",
+				timer: null,
+				faGroup: [
+					{
+						aGroup: [
+							{
+								text: "全部",
+								isTrue: true
+							},
+							{
+								text: "佐腾樱花",
+								isTrue: false
+							},
+							{
+								text: "毕加索",
+								isTrue: false
+							},
+							{
+								text: "沙漠之鹰",
+								isTrue: false
+							},
+							{
+								text: "蝙蝠侠",
+								isTrue: false
+							}
+						],
+						oldIndex: 0,
+						isShow: false,
+						amsg: "全部"
+					}
+					
+				]
+			},
+			mounted: function (){
+				for (var i = 1; i < 13; i++) {
+					this.smallImg.push("images/model_"+i+".jpg");
+				}
+			},
+			methods: {
+				addCurrent: function (index){
+					this.faceType[index].isTrue=true;
+					this.faceType[this.oldIndex].isTrue=false;
+					this.oldIndex=index;
+				},
+				hidden: function (index){
+					this.isSmall=false;
+					this.bigImg="images/big_"+(index+1)+".jpg";
+				},
+				show: function (){
+					this.isSmall=true;
+				},
+				changeLen: function (){
+					this.isUp=!this.isUp;
+					var self=this;
+					var h=parseInt(this.ulHeight);
+					if(this.msg=="收缩"){
+						this.msg="展开";
+						clearInterval(this.timer);
+						this.timer=setInterval(function (){
+							h-=3;
+							if(h>50){
+								self.ulHeight=h+"px";
+							}else{
+								clearInterval(self.timer);
+							}
+						}, 12);
+					}else{
+						this.msg="收缩";
+						clearInterval(this.timer);
+						this.timer=setInterval(function (){
+							h+=3;
+							if(h<200){
+								self.ulHeight=h+"px";
+							}else{
+								clearInterval(self.timer);
+							}
+						}, 12);
+					}	
+				}
+					
+			},
+			components: {
+				"group": group
+			}
+
+		})
+	</script>
+</body>
+</html>
