@@ -10,6 +10,7 @@
 </head>
 <body>
 	<div id="app">
+		<!--********************** 左侧 ********************-->
 		<div class="left" v-if="showLoad" ref="left">
 			<div class="box" v-if="isSmall">
 				<div class="tab">
@@ -32,6 +33,7 @@
 					</div>
 				</div>
 			</div>
+			<!--************ 点击图片之后打放大效果 ****************-->
 			<div class="bigImg" v-else ref="bigImg">
 				<img :src="bigImg" alt="">
 				<ul :style="{ height: ulHeight }">
@@ -44,13 +46,21 @@
 					<img @mousedown="moveTo" @touchstart="touchTo" :style="moveStyle" v-if="showbigGlassImg" :src="bigGlassImg" alt="" ref="oimg">
 				</div>
 			</div>
+			<!--************ 点击图片之后打放大效果 ****************-->
 		</div>
+		<!--********************** 左侧 ********************-->
+
+		<!--********************** 右侧 ********************-->
 		<div class="right" v-if="showLoad">
 			<search></search>
 			<!-- 自定义事件，子组件向父组件发送数据 -->
 			<galsslist @togg="showBig"></galsslist>
 			<div class="mask" v-if="showMask"></div>
 		</div>
+		<!--********************** 右侧 ********************-->
+
+
+		<!--********************** loading ********************-->
 		<div id="c-load" v-else>
 			<span class="top"></span>
 			<span class="right"></span>
@@ -61,8 +71,10 @@
 			<div id="c-white"></div>
 			<p>loading...</p>
 		</div>	
+		<!--********************** loading ********************-->
 	</div>
 	
+	<!--********************** 上方搜索模板 ********************-->
 	<script type="text/template" id="group">
 		<div class="search" @click="allHidden">
 			<div class="group" :style="{zIndex: value.zindex}" @click.stop="hidden(index)" v-for="(value,index) in toggArr">
@@ -77,7 +89,9 @@
 			</div>
 		</div>
 	</script>
+	<!--********************** 上方搜索模板 ********************-->
 
+	<!--********************** 下方眼镜列表模板 ********************-->
 	<script type="text/template" id="galsslist">
 		<div class="galsslist">
 			<ul class="clearfix">
@@ -89,6 +103,7 @@
 			</ul>
 		</div>
 	</script>
+	<!--********************** 下方眼镜列表模板 ********************-->
 
 	<script src="js/vue.js"></script>
 	<script src="js/search.js"></script>

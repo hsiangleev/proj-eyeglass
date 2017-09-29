@@ -226,6 +226,7 @@ var search={
 				val.isShow=false;
 			})
 		},
+		// 向另一个组件传递信息
 		search: function (){
 			var sendMsg=this.toggArr[0].msg;
 			this.$root.bus.$emit("sear",sendMsg);

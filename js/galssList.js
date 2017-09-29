@@ -106,6 +106,7 @@ var galsslist={
 			}
 		}
 	},
+	// 接收另一组件传递的信息
 	created: function (){
 		var self=this;
 		this.$root.bus.$on("sear",function (val){
