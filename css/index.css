@@ -42,6 +42,7 @@ a {
   margin: 0 auto;
   padding: .1rem;
   font-size: .14rem;
+  position: relative;
 }
 #app .left,
 #app .right {
@@ -50,7 +51,13 @@ a {
   float: left;
   box-sizing: border-box;
 }
-#app .left .tab ul li {
+#app .left {
+  position: relative;
+}
+#app .left .box {
+  height: 100%;
+}
+#app .left .box .tab ul li {
   width: .8rem;
   height: .2rem;
   padding: .05rem;
@@ -66,19 +73,19 @@ a {
   float: left;
   cursor: pointer;
 }
-#app .left .tab ul li:nth-child(2) {
+#app .left .box .tab ul li:nth-child(2) {
   background-position: 0 -36px;
 }
-#app .left .tab ul li:nth-child(3) {
+#app .left .box .tab ul li:nth-child(3) {
   background-position: 0 -76px;
 }
-#app .left .tab ul li.current {
+#app .left .box .tab ul li.current {
   background-color: #fff;
   border-bottom: none;
   color: #0c0;
   height: .21rem;
 }
-#app .left .picList {
+#app .left .box .picList {
   width: 95%;
   height: 85%;
   height: calc(100% - 40px);
@@ -88,7 +95,7 @@ a {
   padding: .1rem;
   box-sizing: border-box;
 }
-#app .left .picList .top ul li {
+#app .left .box .picList .top ul li {
   float: left;
   padding: .06rem;
   margin: 0 .03rem;
@@ -96,36 +103,44 @@ a {
   cursor: pointer;
   border-radius: .08rem;
 }
-#app .left .picList .top ul li.current {
+#app .left .box .picList .top ul li.current {
   background-color: #f69;
   color: #fff;
 }
-#app .left .picList .top ul li:hover {
+#app .left .box .picList .top ul li:hover {
   background-color: #6f9;
   color: #fff;
 }
-#app .left .picList .content {
+#app .left .box .picList .content {
   width: 100%;
   height: 100%;
   margin-top: .1rem;
 }
-#app .left .picList .content ul li {
+#app .left .box .picList .content ul li {
   float: left;
-  padding: 0 0.12rem 0.12rem 0;
+  padding: 0 0.18rem 0.18rem 0;
 }
-#app .left .picList .content ul li img {
+#app .left .box .picList .content ul li img {
   border: 1px solid #ddd;
   cursor: pointer;
 }
-#app .left .picList .content ul li img:hover {
+#app .left .box .picList .content ul li img:hover {
   box-shadow: 0 0 5px #0c0;
+}
+#app .left .box .picList .content ul li img.imgOpa {
+  opacity: 0.2;
+  cursor: default;
+}
+#app .left .box .picList .content ul li img.imgOpa:hover {
+  box-shadow: none;
 }
 #app .left .bigImg {
   width: 95%;
   height: 100%;
   position: relative;
+  box-shadow: 0 0 .08rem #aaa;
 }
-#app .left .bigImg img {
+#app .left .bigImg > img {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -140,6 +155,7 @@ a {
   position: absolute;
   top: .1rem;
   right: 0;
+  z-index: 2;
 }
 #app .left .bigImg ul li {
   margin: .15rem .03rem;
@@ -165,8 +181,21 @@ a {
 #app .left .bigImg ul li:nth-child(4) {
   background-position: 1px -285px;
 }
+#app .left .bigImg .oneGlass {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+#app .left .bigImg .oneGlass img {
+  position: absolute;
+  cursor: move;
+}
 #app .right {
   float: right;
+  position: relative;
 }
 #app .right .search {
   width: 99%;
@@ -214,6 +243,7 @@ a {
   position: absolute;
   top: 100%;
   left: 0;
+  z-index: 2;
   width: 100%;
   background-color: #fff;
 }
@@ -232,6 +262,54 @@ a {
 }
 #app .right .search .group .select li:hover {
   background-color: #acfacc;
+}
+#app .right .search .group:last-child a {
+  width: 96%;
+  border-radius: .04rem;
+  color: #f69;
+  border: 1px solid #f69;
+}
+#app .right .search .group:last-child a:hover {
+  color: #6f9;
+  border: 1px solid #6f9;
+}
+#app .right .galsslist {
+  width: 99%;
+  margin-top: .1rem;
+}
+#app .right .galsslist ul {
+  padding-left: .08rem;
+}
+#app .right .galsslist ul li {
+  float: left;
+  padding: .06rem;
+  cursor: pointer;
+  border-bottom: 1px dashed #CCC;
+}
+#app .right .galsslist ul li:hover img, #app .right .galsslist ul li.current img {
+  box-shadow: 0 0 10px #c00;
+}
+#app .right .galsslist ul li p, #app .right .galsslist ul li h4 {
+  padding: 0;
+  margin: 0;
+  font-weight: 400;
+  font-size: .12rem;
+  text-align: center;
+}
+#app .right .galsslist ul li h4 {
+  color: #0c0;
+}
+#app .right .galsslist ul li p {
+  color: #666;
+}
+#app .right .mask {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.6);
+  z-index: 10000;
 }
 
 /*# sourceMappingURL=index.css.map */

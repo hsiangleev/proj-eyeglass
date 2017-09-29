@@ -4,10 +4,11 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<link rel="stylesheet" href="css/index.css">
+	<link rel="stylesheet" href="css/load.css">
 </head>
 <body>
 	<div id="app">
-		<div class="left">
+		<div class="left" v-if="showLoad" ref="left">
 			<div class="box" v-if="isSmall">
 				<div class="tab">
 					<ul class="clearfix">
@@ -24,12 +25,12 @@
 					</div>
 					<div class="content">
 						<ul class="clearfix">
-							<li v-for="(val,index) in smallImg"><img :src="val" @click="hidden(index)"></li>
+							<li v-for="(val,index) in smallImg"><img :src="val.src" @click="hidden(index)" :class="{imgOpa: val.addClass}"></li>
 						</ul>
 					</div>
 				</div>
 			</div>
-			<div class="bigImg" v-else>
+			<div class="bigImg" v-else ref="bigImg">
 				<img :src="bigImg" alt="">
 				<ul :style="{ height: ulHeight }">
 					<li @click="changeLen" :class="{up: isUp}"><br>{{ msg }}</li>
@@ -37,174 +38,58 @@
 					<li><br>瞳距</li>
 					<li @click="show"><br>重选</li>
 				</ul>
+				<div class="oneGlass" ref="oneGlass">
+					<img @mousedown="moveTo" :style="moveStyle" v-if="showbigGlassImg" :src="bigGlassImg" alt="" ref="oimg">
+				</div>
 			</div>
 		</div>
-		<div class="right">
-			<div class="search">
-				<group v-for="val in faGroup" message="val"></group>
-			</div>
+		<div class="right" v-if="showLoad">
+			<search></search>
+			<!-- 自定义事件，子组件向父组件发送数据 -->
+			<galsslist @togg="showBig"></galsslist>
+			<div class="mask" v-if="showMask"></div>
 		</div>
+		<div id="c-load" v-else>
+			<span class="top"></span>
+			<span class="right"></span>
+			<span class="bottom"></span>
+			<span class="left"></span>
+			<div id="c-red"></div>
+			<div id="c-orange"></div>
+			<div id="c-white"></div>
+		</div>	
 	</div>
 	
 	<script type="text/template" id="group">
-		<div class="group" @click="hidden">
-			<a href="javascript:;">{{ message.amsg }}</a>
-			<span>▼</span>
-			<ul class="select" v-if="message.isShow">
-				<li :class="{current: val.isTrue}" v-for="(val,index) in message.aGroup" @click="addCurrent(index)">{{ val.text }}</li>
+		<div class="search" @click="allHidden">
+			<div class="group" :style="{zIndex: value.zindex}" @click.stop="hidden(index)" v-for="(value,index) in toggArr">
+				<a href="javascript:;">{{ value.msg }}</a>
+				<span>▼</span>
+				<ul class="select" v-if="value.isShow">
+					<li :class="{current: val.isTrue}" v-for="(val,ind) in value.ogroup" @click="addCurrent(index,ind)">{{ val.text }}</li>
+				</ul>
+			</div>
+			<div class="group">
+				<a @click="search" href="javascript:;">点击搜索</a>
+			</div>
+		</div>
+	</script>
+
+	<script type="text/template" id="galsslist">
+		<div class="galsslist">
+			<ul class="clearfix">
+				<li v-for="(val,index) in glass" @click="showGlass(index)" v-if="val.show">
+					<img :src="val.src" alt="">
+					<h4>{{ val.title }}</h4>
+					<p>{{ val.text }}</p>
+				</li>
 			</ul>
 		</div>
 	</script>
 
 	<script src="js/vue.js"></script>
-	<script>
-		var group={
-			template: "#group",
-			props: ["message"],
-			data: function (){
-				return {
-					
-				}
-			},
-			methods: {
-				addCurrent: function (index){
-					this.message.aGroup[index].isTrue=true;
-					this.message.amsg=this.message.aGroup[index].text;
-					this.message.aGroup[this.message.oldIndex].isTrue=false;
-					this.message.oldIndex=index;
-
-				},
-				hidden: function (){
-					this.message.isShow=!this.message.isShow;
-				}
-			}
-
-		}
-		var vm=new Vue({
-			el: "#app",
-			data: {
-				faceType: [
-					{
-						type: "全部",
-						isTrue: true
-					},
-					{
-						type: "椭圆脸",
-						isTrue: false
-					},
-					{
-						type: "圆形脸",
-						isTrue: false
-					},
-					{
-						type: "长形脸",
-						isTrue: false
-					},
-					{
-						type: "方形脸",
-						isTrue: false
-					},
-					{
-						type: "瓜子脸",
-						isTrue: false
-					},
-					{
-						type: "心型脸",
-						isTrue: false
-					}
-				],
-				oldIndex: 0,
-				smallImg: [],
-				isSmall: true,
-				bigImg: "images/big_1.jpg",
-				ulHeight: "200px",
-				isUp: false,
-				msg: "收缩",
-				timer: null,
-				faGroup: [
-					{
-						aGroup: [
-							{
-								text: "全部",
-								isTrue: true
-							},
-							{
-								text: "佐腾樱花",
-								isTrue: false
-							},
-							{
-								text: "毕加索",
-								isTrue: false
-							},
-							{
-								text: "沙漠之鹰",
-								isTrue: false
-							},
-							{
-								text: "蝙蝠侠",
-								isTrue: false
-							}
-						],
-						oldIndex: 0,
-						isShow: false,
-						amsg: "全部"
-					}
-					
-				]
-			},
-			mounted: function (){
-				for (var i = 1; i < 13; i++) {
-					this.smallImg.push("images/model_"+i+".jpg");
-				}
-			},
-			methods: {
-				addCurrent: function (index){
-					this.faceType[index].isTrue=true;
-					this.faceType[this.oldIndex].isTrue=false;
-					this.oldIndex=index;
-				},
-				hidden: function (index){
-					this.isSmall=false;
-					this.bigImg="images/big_"+(index+1)+".jpg";
-				},
-				show: function (){
-					this.isSmall=true;
-				},
-				changeLen: function (){
-					this.isUp=!this.isUp;
-					var self=this;
-					var h=parseInt(this.ulHeight);
-					if(this.msg=="收缩"){
-						this.msg="展开";
-						clearInterval(this.timer);
-						this.timer=setInterval(function (){
-							h-=3;
-							if(h>50){
-								self.ulHeight=h+"px";
-							}else{
-								clearInterval(self.timer);
-							}
-						}, 12);
-					}else{
-						this.msg="收缩";
-						clearInterval(this.timer);
-						this.timer=setInterval(function (){
-							h+=3;
-							if(h<200){
-								self.ulHeight=h+"px";
-							}else{
-								clearInterval(self.timer);
-							}
-						}, 12);
-					}	
-				}
-					
-			},
-			components: {
-				"group": group
-			}
-
-		})
-	</script>
+	<script src="js/search.js"></script>
+	<script src="js/galssList.js"></script>
+	<script src="js/index.js"></script>
 </body>
 </html>
