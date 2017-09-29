@@ -216,3 +216,13 @@ body{
 		height: 1.1rem;
 	}
 }
+#c-load p{
+	font-size: 0.4rem;
+	position: absolute;
+	width: 100%;
+	text-align: center;
+	top: 30%;
+	z-index: 1;
+	font-family: Bookman Old Style,David Regular,"微软雅黑" ;
+	color: #69f;
+}

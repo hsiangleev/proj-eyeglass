@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Document</title>
+	<link rel="icon" href="images/lee.ico" >
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <title>凉宫</title>
 	<link rel="stylesheet" href="css/index.css">
 	<link rel="stylesheet" href="css/load.css">
 </head>
@@ -39,7 +41,7 @@
 					<li @click="show"><br>重选</li>
 				</ul>
 				<div class="oneGlass" ref="oneGlass">
-					<img @mousedown="moveTo" :style="moveStyle" v-if="showbigGlassImg" :src="bigGlassImg" alt="" ref="oimg">
+					<img @mousedown="moveTo" @touchstart="touchTo" :style="moveStyle" v-if="showbigGlassImg" :src="bigGlassImg" alt="" ref="oimg">
 				</div>
 			</div>
 		</div>
@@ -57,6 +59,7 @@
 			<div id="c-red"></div>
 			<div id="c-orange"></div>
 			<div id="c-white"></div>
+			<p>loading...</p>
 		</div>	
 	</div>
 	

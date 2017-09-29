@@ -193,14 +193,38 @@ var vm=new Vue({
 			var dd=this.$el;
 			var x=e.clientX-a.offsetLeft-d.offsetLeft-dd.offsetLeft;
 			var y=e.clientY-a.offsetTop-d.offsetTop-dd.offsetTop;
-			document.onmousemove=function (e){
+			document.addEventListener("mousemove", move, false);
+			a.addEventListener("mouseup", function (){
+				document.removeEventListener("mousemove", move, false);
+			}, false);
+			
+			function move(e){
 				var xx=e.clientX-x-d.offsetLeft-dd.offsetLeft;
 				var yy=e.clientY-y-d.offsetTop-dd.offsetTop;
 				self.moveStyle.left=xx+"px";
 				self.moveStyle.top=yy+"px";
 			}
-			a.onmouseup=function (){
-				document.onmousemove=null;
+		},
+		touchTo: function (e){
+			var self=this;
+			e.preventDefault();
+			var a=this.$refs["oimg"];
+			var b=this.$refs["oneGlass"];	// 0
+			var c=this.$refs["bigImg"];		// 0
+			var d=this.$refs["left"];
+			var dd=this.$el;
+			var x=e.touches[0].clientX-a.offsetLeft-d.offsetLeft-dd.offsetLeft;
+			var y=e.touches[0].clientY-a.offsetTop-d.offsetTop-dd.offsetTop;
+			document.addEventListener("touchmove", move, false);
+			a.addEventListener("touchend", function (){
+				document.removeEventListener("touchmove", move, false);
+			}, false);
+			
+			function move(e){
+				var xx=e.touches[0].clientX-x-d.offsetLeft-dd.offsetLeft;
+				var yy=e.touches[0].clientY-y-d.offsetTop-dd.offsetTop;
+				self.moveStyle.left=xx+"px";
+				self.moveStyle.top=yy+"px";
 			}
 		},
 		// 显示眼镜
